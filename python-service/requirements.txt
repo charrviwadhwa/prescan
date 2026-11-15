@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-multipart
+opencv-python-headless
+pillow
+pymupdf
+google-genai
+rapidfuzz
+python-dotenv
