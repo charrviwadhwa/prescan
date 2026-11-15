@@ -1,122 +1,155 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  NavLink,
+  Navigate,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  LayoutDashboard,
+  UploadCloud,
+  Files,
+  Settings,
+  LogOut,
+} from "lucide-react";
+
+
+import Dashboard from "./pages/Dashboard";
+import Upload from "./pages/Upload";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import History from "./pages/History";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("prescan_token");
+    localStorage.removeItem("prescan_user");
+
+    navigate("/login", { replace: true });
+  };
+
+  const navClass = ({ isActive }) =>
+    `w-full flex items-center gap-3 px-3 py-3 rounded-lg text-[14px] transition ${
+      isActive
+        ? "bg-white text-[#34443D] font-medium"
+        : "text-[#65766C] hover:bg-white/60"
+    }`;
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
+    <aside className="w-[250px] min-h-screen shrink-0 bg-[#EAF0E9] px-5 py-7 flex flex-col border-r border-[#DFE7DE]">
+
+      {/* Brand */}
+      <div className="mb-14 px-2">
+        <h1 className="text-[27px] font-semibold tracking-[-1.5px] text-[#34443D]">
+          prescan<span className="text-[#82B9A2]">.</span>
+        </h1>
+
+        <p className="text-[9px] tracking-[2px] text-[#789083] mt-1 uppercase">
+          Prescription records
+        </p>
+      </div>
+
+      {/* Navigation */}
+      <div className="mb-3 px-3">
+        <p className="text-[11px] font-medium text-[#87968A]">
+          Workspace
+        </p>
+      </div>
+
+      <nav className="space-y-1">
+        <NavLink to="/dashboard" className={navClass}>
+          <LayoutDashboard size={18} strokeWidth={1.6} />
+          Dashboard
+        </NavLink>
+
+        <NavLink to="/upload" className={navClass}>
+          <UploadCloud size={18} strokeWidth={1.6} />
+          Upload prescription
+        </NavLink>
+
+        <NavLink to="/history" className={navClass}>
+          <Files size={18} strokeWidth={1.6} />
+          History
+        </NavLink>
+      </nav>
+
+      {/* Bottom Navigation */}
+      <div className="mt-auto pt-6 border-t border-[#D8E2D8] space-y-1">
         <button
           type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-[#65766C] hover:bg-white/60 transition text-[14px]"
         >
-          Count is {count}
+          <Settings size={18} strokeWidth={1.6} />
+          Settings
         </button>
-      </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-[#65766C] hover:bg-white/60 transition text-[14px]"
+        >
+          <LogOut size={18} strokeWidth={1.6} />
+          Logout
+        </button>
+      </div>
+    </aside>
+  );
 }
 
-export default App
+function Layout() {
+  return (
+    <div className="min-h-screen flex">
+      <Sidebar />
+      <Outlet />
+    </div>
+  );
+}
+
+
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+
+            <Route
+              path="/"
+              element={<Navigate to="/dashboard" replace />}
+            />
+
+            <Route path="/dashboard" element={<Dashboard />} />
+
+            <Route path="/upload" element={<Upload />} />
+
+            <Route path="/history" element={<History />} />
+
+          </Route>
+        </Route>
+
+        {/* Unknown Routes */}
+        <Route
+          path="*"
+          element={<Navigate to="/dashboard" replace />}
+        />
+
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
