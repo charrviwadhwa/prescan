@@ -12,7 +12,7 @@ export const analyzePrescription = async (file) => {
   );
 
   const response = await fetch(
-    `${PYTHON_SERVICE_URL}/analyze`,
+    `${PYTHON_SERVICE_URL.replace(/\/+$/, "")}/analyze`,
     {
       method: "POST",
       body: formData
